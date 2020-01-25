@@ -33,7 +33,11 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(i);
 
         // For Adding Letter
-        Intent i = new Intent(getApplicationContext(),Add_Letter.class);
+//        Intent i = new Intent(getApplicationContext(),Add_Letter.class);
+//        startActivity(i);
+
+        // For Rendering AR_Letter Render
+        Intent i = new Intent(getApplicationContext(),ArLetterRender.class);
         startActivity(i);
     }
 }
