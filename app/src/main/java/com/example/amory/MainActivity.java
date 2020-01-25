@@ -31,5 +31,9 @@ public class MainActivity extends AppCompatActivity {
         // For Uploading Photo
 //        Intent i = new Intent(getApplicationContext(),UploadPic.class);
 //        startActivity(i);
+
+        // For Adding Letter
+        Intent i = new Intent(getApplicationContext(),Add_Letter.class);
+        startActivity(i);
     }
 }
