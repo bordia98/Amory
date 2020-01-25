@@ -111,6 +111,7 @@ public class UserBio extends AppCompatActivity {
         structure.put("State", tstate);
         structure.put("Age",tage);
         structure.put("Gender",tgender);
+        structure.put("url","");
 
         pgbar.setVisibility(View.VISIBLE);
 
