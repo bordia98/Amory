@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "244259177407",
+    "firebase_url": "https://amory-9b8c1.firebaseio.com",
+    "project_id": "amory-9b8c1",
+    "storage_bucket": "amory-9b8c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:244259177407:android:f71736a076566a4d79170a",
+        "android_client_info": {
+          "package_name": "com.example.amory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "244259177407-cav68m6snaedmr9vonul4v5sqhfbp09k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.amory",
+            "certificate_hash": "f155ddc4a638da158d5c88144b695d735eafa30b"
+          }
+        },
+        {
+          "client_id": "244259177407-72bpkca37lrhpt8aav5s9d0cdti1ga6o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCheVQIWrU_zzXkpcDK-ETSmdwEpFk4O5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "244259177407-72bpkca37lrhpt8aav5s9d0cdti1ga6o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUP">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="48dp"
+            android:textAlignment="center"
+            android:layout_margin="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" Come and join Us. We will help you to find a perfect partner for life not for Business"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:padding="20dp"
+            android:textAlignment="center"
+            />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="50dp"
+            android:text="E-mail ID"
+            android:textSize="20dp"/>
+
+        <EditText
+            android:id="@+id/emailfield"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:textColor="#000000"
+            android:hint="enter email address" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Password"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            />
+
+        <EditText
+            android:id="@+id/passwordfield"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="enter password"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm Password"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            />
+
+        <EditText
+            android:id="@+id/confirmpasswordfield"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="enter password"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/register"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="130dp"
+            android:layout_marginLeft="130dp"
+            android:background="#2d89ec"
+            android:layout_margin="20dp"
+            android:textColor="#FFFFFF"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="Register " />
+
+        <ProgressBar
+            android:id="@+id/pgbar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
