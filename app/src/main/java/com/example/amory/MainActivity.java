@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(i);
 
         // For Uploading Photo
-        Intent i = new Intent(getApplicationContext(),UploadPic.class);
-        startActivity(i);
+//        Intent i = new Intent(getApplicationContext(),UploadPic.class);
+//        startActivity(i);
     }
 }

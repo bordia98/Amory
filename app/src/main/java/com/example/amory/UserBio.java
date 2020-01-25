@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,8 +25,9 @@ import java.util.Map;
 
 public class UserBio extends AppCompatActivity {
 
-    EditText name,city,state,age;
-    ListView gender;
+    EditText name,city,state,age,description;
+    String gender;
+    RadioButton male,female,others;
     Button next;
     FirebaseAuth mAuth;
     ProgressBar pgbar;
@@ -41,7 +43,10 @@ public class UserBio extends AppCompatActivity {
         state = findViewById(R.id.city);
         age = findViewById(R.id.age);
         pgbar = findViewById(R.id.pgbar);
-        gender = findViewById(R.id.gender);
+        description = findViewById(R.id.description);
+        male = findViewById(R.id.male);
+        female = findViewById(R.id.female);
+        others = findViewById(R.id.others);
         next = findViewById(R.id.Next);
 
         if(mAuth.getCurrentUser() == null){
@@ -63,8 +68,8 @@ public class UserBio extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        Intent i = new Intent(getApplicationContext(),MainActivity.class);
-//        startActivity(i);
+        Intent i = new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(i);
     }
 
     private void savebio() {
@@ -94,13 +99,21 @@ public class UserBio extends AppCompatActivity {
             name.requestFocus();
             return;
         }
-        int index = gender.getSelectedItemPosition();
-        if(index == 0){
-            tgender = "Male";
-        }else if(index == 1){
-            tgender = "Female";
+        if(male.isChecked()){
+            gender = "Male";
+        }else if(female.isChecked()){
+            gender = "female";
+        }else if(others.isChecked()){
+            gender = "others";
         }else{
-            tgender = "Others";
+            Toast.makeText(getApplicationContext(),"Please select gender",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String des = description.getText().toString().trim();
+        if(des.length()<10){
+            description.setError("Must have atleast 10 characters");
+            description.requestFocus();
+            return;
         }
 
         final DatabaseReference data = UserData.push();
@@ -110,8 +123,9 @@ public class UserBio extends AppCompatActivity {
         structure.put("City", tcity);
         structure.put("State", tstate);
         structure.put("Age",tage);
-        structure.put("Gender",tgender);
+        structure.put("Gender",gender);
         structure.put("url","");
+        structure.put("Description",des);
 
         pgbar.setVisibility(View.VISIBLE);
 
