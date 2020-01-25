@@ -23,5 +23,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
         }
         setContentView(R.layout.activity_main);
+
+        // For User Bio
+//        Intent i  = new Intent(getApplicationContext(),UserBio.class);
+//        startActivity(i);
+
+        // For Uploading Photo
+        Intent i = new Intent(getApplicationContext(),UploadPic.class);
+        startActivity(i);
     }
 }
