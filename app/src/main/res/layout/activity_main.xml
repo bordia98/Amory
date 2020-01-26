@@ -1,19 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Login"
+    android:background="#FFF">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Menu"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="48dp"
+            android:textAlignment="center"
+            android:layout_margin="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Click on thte option where you want to head to, we are here to support you"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:padding="20dp"
+            android:textAlignment="center"
+            />
+
+        <Button
+            android:id="@+id/personal"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="130dp"
+            android:layout_marginLeft="130dp"
+            android:background="#2d89ec"
+            android:layout_margin="20dp"
+            android:textColor="#FFFFFF"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="Add Personal Info " />
+
+        <Button
+            android:id="@+id/photo"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="130dp"
+            android:layout_marginLeft="130dp"
+            android:background="#2d89ec"
+            android:layout_margin="20dp"
+            android:textColor="#FFFFFF"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="Add Profile Pic " />
+
+        <Button
+            android:id="@+id/AddLetter"
+            android:layout_gravity="center_horizontal"
+            android:layout_width= "250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="130dp"
+            android:layout_marginLeft="130dp"
+            android:background="#2d89ec"
+            android:layout_margin="20dp"
+            android:textColor="#FFFFFF"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="Add Letter " />
+
+        <Button
+            android:id="@+id/search"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="130dp"
+            android:layout_marginLeft="130dp"
+            android:background="#2d89ec"
+            android:layout_margin="20dp"
+            android:textColor="#FFFFFF"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="Find NearBy Letters" />
+
+        <Button
+            android:id="@+id/view_profile"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="130dp"
+            android:layout_marginLeft="130dp"
+            android:background="#2d89ec"
+            android:layout_margin="20dp"
+            android:textColor="#FFFFFF"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="View Profile" />
+    </LinearLayout>
+</RelativeLayout>

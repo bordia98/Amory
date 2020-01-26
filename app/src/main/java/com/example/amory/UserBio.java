@@ -138,7 +138,7 @@ public class UserBio extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             pgbar.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), "Profile has been saved", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(getApplicationContext(),UploadPic.class);
+                            Intent i = new Intent(getApplicationContext(),MainActivity.class);
                             startActivity(i);
                         } else {
                             pgbar.setVisibility(View.GONE);

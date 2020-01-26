@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,25 +26,57 @@ public class MainActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_main);
 
-        // For User Bio
-//        Intent i  = new Intent(getApplicationContext(),ProfileActivity.class);
-//        startActivity(i);
+        Button addbio = findViewById(R.id.personal);
+        Button profile = findViewById(R.id.photo);
+        Button addletter = findViewById(R.id.AddLetter);
+        Button search = findViewById(R.id.search);
+        Button viewpro = findViewById(R.id.view_profile);
 
-        // For Uploading Photo
-//        Intent i = new Intent(getApplicationContext(),UploadPic.class);
-//        startActivity(i);
+        addbio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i  = new Intent(getApplicationContext(),UserBio.class);
+                startActivity(i);
+            }
+        });
 
-        // For Adding Letter
-//        Intent i = new Intent(getApplicationContext(),Add_Letter.class);
-//        startActivity(i);
+        viewpro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),ProfileActivity.class);
+                startActivity(i);
+            }
+        });
 
-        // For Rendering AR_Letter Render
-//        Intent i = new Intent(getApplicationContext(),ArLetterRender.class);
-//        startActivity(i);
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),UploadPic.class);
+                startActivity(i);
+            }
+        });
 
-        //For Rendering NearBy
-        Intent i = new Intent(getApplicationContext(),ShowNearBy.class);
-        startActivity(i);
+        addletter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),Add_Letter.class);
+                startActivity(i);
+            }
+        });
 
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),ShowNearBy.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+        System.exit(0);
     }
 }

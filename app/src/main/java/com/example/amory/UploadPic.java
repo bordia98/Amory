@@ -136,6 +136,8 @@ public class UploadPic extends AppCompatActivity {
                     UserData.child(d.getKey()).updateChildren(updateMap);
                 }
                 pgbar.setVisibility(View.GONE);
+                Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(i);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

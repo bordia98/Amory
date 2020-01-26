@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,6 +53,7 @@ public class ArLetterRender extends AppCompatActivity {
     TextView title;
     EditText description;
     CircleImageView Pic;
+    boolean check=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,26 +95,32 @@ public class ArLetterRender extends AppCompatActivity {
 
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-                    if (viewrenderable == null) {
-                        Log.d("XYZ", "Why i am here");
-                        return;
-                    }
+                    if(check){
+                        if (viewrenderable == null) {
+                            Log.d("XYZ", "Why i am here");
+                            return;
+                        }
 
-                    // Create the Anchor.
-                    Anchor anchor = hitResult.createAnchor();
-                    AnchorNode anchorNode = new AnchorNode(anchor);
-                    anchorNode.setParent(arFragment.getArSceneView().getScene());
-                    // Create the transformable andy and add it to the anchor.
-                    TransformableNode andy = new TransformableNode(arFragment.getTransformationSystem());
-                    andy.setParent(anchorNode);
-                    ((ViewRenderable) viewrenderable).setSizer(new FixedWidthViewSizer(1));
-                    andy.setRenderable(viewrenderable);
-                    andy.select();
+                        // Create the Anchor.
+                        Anchor anchor = hitResult.createAnchor();
+                        AnchorNode anchorNode = new AnchorNode(anchor);
+                        anchorNode.setParent(arFragment.getArSceneView().getScene());
+                        // Create the transformable andy and add it to the anchor.
+                        TransformableNode andy = new TransformableNode(arFragment.getTransformationSystem());
+                        andy.setParent(anchorNode);
+                        ((ViewRenderable) viewrenderable).setSizer(new FixedWidthViewSizer(1));
+                        andy.setRenderable(viewrenderable);
+                        andy.select();
+                        check = false;
+                    }else{
+                        Toast.makeText(getApplicationContext(),"You Liked the Letter",Toast.LENGTH_SHORT).show();
+
+                        // Code for Matching will come here
+                    }
                 });
     }
 
     private void accessthedata() {
-
         UserData.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
