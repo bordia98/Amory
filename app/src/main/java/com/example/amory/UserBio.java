@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class UserBio extends AppCompatActivity {
 
-    EditText name,city,state,age,description;
+    EditText name,city,state,age,description,number;
     String gender;
     RadioButton male,female,others;
     Button next;
@@ -48,6 +48,7 @@ public class UserBio extends AppCompatActivity {
         female = findViewById(R.id.female);
         others = findViewById(R.id.others);
         next = findViewById(R.id.Next);
+        number = findViewById(R.id.number);
 
         if(mAuth.getCurrentUser() == null){
             Intent i = new Intent(getApplicationContext(),Login.class);
@@ -73,7 +74,7 @@ public class UserBio extends AppCompatActivity {
     }
 
     private void savebio() {
-        String tname,tcity,tstate,tgender;
+        String tname,tcity,tstate,tgender,num;
 
         tname = name.getText().toString().trim();
         if(tname.length() == 0){
@@ -116,6 +117,14 @@ public class UserBio extends AppCompatActivity {
             return;
         }
 
+        num = number.getText().toString();
+        if(num.length()!=10){
+            number.setError("Must have 10 digit only");
+            number.requestFocus();
+            return;
+        }
+
+
         final DatabaseReference data = UserData.push();
 
         final Map structure = new HashMap();
@@ -126,6 +135,7 @@ public class UserBio extends AppCompatActivity {
         structure.put("Gender",gender);
         structure.put("url","");
         structure.put("Description",des);
+        structure.put("Number",num);
 
         pgbar.setVisibility(View.VISIBLE);
 

@@ -40,6 +40,7 @@ public class ViewOtherProfile extends AppCompatActivity {
         final TextView Bio = findViewById(R.id.Bio_);
         progressBar = findViewById(R.id.pgbar);
         final CircleImageView Pic = findViewById(R.id.profile_image);
+        final TextView number = findViewById(R.id.number);
 
         progressBar.setVisibility(View.VISIBLE);
         mAuth = FirebaseAuth.getInstance();
@@ -57,6 +58,7 @@ public class ViewOtherProfile extends AppCompatActivity {
                     Age.setText(d.child("Age").getValue().toString());
                     Gender.setText(d.child("Gender").getValue().toString());
                     Bio.setText(d.child("Description").getValue().toString());
+                    number.setText(d.child("Number").getValue().toString());
 
                     Glide.with(getApplicationContext()).load(d.child("url").getValue().toString())
                             .thumbnail(0.5f)
