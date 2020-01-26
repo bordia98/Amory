@@ -42,7 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
         final TextView Name_= findViewById(R.id.Name_);
         final TextView CityState_= findViewById(R.id.City_);
         final TextView Age = findViewById(R.id.Age_);
-        final TextView Gender = findViewById(R.id.Gender_);
+        final TextView Gender = findViewById(R.id.gender);
         final TextView Bio = findViewById(R.id.Bio_);
         progressBar = findViewById(R.id.pgbar);
         final CircleImageView Pic = findViewById(R.id.profile_image);
