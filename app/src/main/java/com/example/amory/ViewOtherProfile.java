@@ -1,7 +1,9 @@
 package com.example.amory;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewOtherProfile extends AppCompatActivity {
@@ -34,6 +39,7 @@ public class ViewOtherProfile extends AppCompatActivity {
         setContentView(R.layout.activity_view_other_profile);
         key = getIntent().getStringExtra("key");
         final TextView Name_= findViewById(R.id.Name_);
+        final Button chat = findViewById(R.id.chat_);
         final TextView CityState_= findViewById(R.id.City_);
         final TextView Age = findViewById(R.id.Age_);
         final TextView Gender = findViewById(R.id.gender);
@@ -73,6 +79,20 @@ public class ViewOtherProfile extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getApplicationContext(),"Error Ecountered",Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
+            }
+
+        });
+
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ViewOtherProfile.this, chatter.class);
+                String s = key + user.getUid();
+                char  a[] = s.toCharArray();
+                Arrays.sort(a);
+                s = new String(a);
+                i.putExtra("NAME",s);
+                startActivity(i);
             }
         });
     }
