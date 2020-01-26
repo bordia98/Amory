@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         Button addletter = findViewById(R.id.AddLetter);
         Button search = findViewById(R.id.search);
         Button viewpro = findViewById(R.id.view_profile);
+        Button logout = findViewById(R.id.logout);
 
         addbio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +69,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(),ShowNearBy.class);
+                startActivity(i);
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                fAuth.signOut();
+                Intent i = new Intent(getApplicationContext(),Login.class);
                 startActivity(i);
             }
         });

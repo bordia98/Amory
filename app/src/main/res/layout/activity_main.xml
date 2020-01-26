@@ -108,5 +108,21 @@
             android:textStyle="bold"
             android:textSize="20dp"
             android:text="View Profile" />
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="130dp"
+            android:layout_marginLeft="130dp"
+            android:background="@drawable/round"
+            android:layout_margin="20dp"
+            android:textColor="#FFFFFF"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="LogOut" />
+
     </LinearLayout>
 </RelativeLayout>
