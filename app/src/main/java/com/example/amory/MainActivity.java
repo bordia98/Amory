@@ -37,7 +37,12 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(i);
 
         // For Rendering AR_Letter Render
-        Intent i = new Intent(getApplicationContext(),ArLetterRender.class);
+//        Intent i = new Intent(getApplicationContext(),ArLetterRender.class);
+//        startActivity(i);
+
+        //For Rendering NearBy
+        Intent i = new Intent(getApplicationContext(),ShowNearBy.class);
         startActivity(i);
+
     }
 }

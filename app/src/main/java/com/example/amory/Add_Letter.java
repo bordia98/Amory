@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.Person;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -25,6 +26,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -34,8 +37,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,10 +53,12 @@ public class Add_Letter extends AppCompatActivity  {
     FirebaseUser user;
     FirebaseAuth mAuth;
     private DatabaseReference UserData;
+    private DatabaseReference PersonalData;
     double lat,lng;
     boolean check=false;
     TextView lati,longi;
     ProgressBar pgbar;
+    String url=null;
     FusedLocationProviderClient mFusedLocationClient;
 
     @Override
@@ -59,6 +67,14 @@ public class Add_Letter extends AppCompatActivity  {
         setContentView(R.layout.activity_add__letter);
 
         mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() == null){
+            Intent i = new Intent(getApplicationContext(),Login.class);
+            startActivity(i);
+        }
+        FirebaseUser user = mAuth.getCurrentUser();
+        PersonalData = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+        UserData = FirebaseDatabase.getInstance().getReference().child("Letters").child(user.getUid());
+        url = getprofilepic();
         description = findViewById(R.id.description);
         title = findViewById(R.id.title);
         lati = findViewById(R.id.lat);
@@ -67,13 +83,8 @@ public class Add_Letter extends AppCompatActivity  {
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        if(mAuth.getCurrentUser() == null){
-            Intent i = new Intent(getApplicationContext(),Login.class);
-            startActivity(i);
-        }
         save = findViewById(R.id.save);
-        FirebaseUser user = mAuth.getCurrentUser();
-        UserData = FirebaseDatabase.getInstance().getReference().child("Letters").child(user.getUid());
+
         getLastLocation();
         save.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
@@ -83,6 +94,24 @@ public class Add_Letter extends AppCompatActivity  {
             }
         });
 
+    }
+
+    private String getprofilepic() {
+        PersonalData.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Iterable<DataSnapshot> id = dataSnapshot.getChildren();
+                for(DataSnapshot d : id){
+                    url = d.child("url").getValue().toString();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(),"Error Ecountered",Toast.LENGTH_SHORT).show();
+            }
+        });
+        return  url;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -107,6 +136,15 @@ public class Add_Letter extends AppCompatActivity  {
             Toast.makeText(getApplicationContext(),"Please wait while your location get Detected",Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if(url == null){
+            Toast.makeText(getApplicationContext(),"Wait for getting the image Url",Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+        UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+
+
         final Map structure = new HashMap();
         structure.put("Title", ttitle);
         structure.put("Description", tdescription);
@@ -115,6 +153,8 @@ public class Add_Letter extends AppCompatActivity  {
         structure.put("Signature",mAuth.getCurrentUser().getUid());
         structure.put("Latitude",lat);
         structure.put("Longitude",lng);
+        structure.put("Url",url);
+
 
         final DatabaseReference data = UserData.push();
 
@@ -129,7 +169,7 @@ public class Add_Letter extends AppCompatActivity  {
                         if (task.isSuccessful()) {
                             pgbar.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), "Profile has been saved", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(getApplicationContext(),UploadPic.class);
+                            Intent i = new Intent(getApplicationContext(),MainActivity.class);
                             startActivity(i);
                         } else {
                             pgbar.setVisibility(View.GONE);

@@ -1,5 +1,6 @@
 package com.example.amory;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -10,8 +11,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
@@ -21,6 +27,15 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ArLetterRender extends AppCompatActivity {
 
@@ -30,20 +45,40 @@ public class ArLetterRender extends AppCompatActivity {
     private ArFragment arFragment;
     private ModelRenderable andyRenderable;
     private ViewRenderable viewrenderable;
+    String key;
+    private DatabaseReference UserData;
+    FirebaseAuth mAuth;
+    FirebaseUser user;
+    TextView title;
+    EditText description;
+    CircleImageView Pic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        key = getIntent().getStringExtra("key");
         if (!checkIsSupportedDeviceOrFinish(this)) {
             return;
         }
+
+        Log.d("XYZ",key);
+        View lay = getLayoutInflater().inflate(R.layout.letterlayout,null);
+        title = lay.findViewById(R.id.title);
+        description = lay.findViewById(R.id.description);
+        Pic = lay.findViewById(R.id.profile_image);
+        UserData = FirebaseDatabase.getInstance().getReference().child("Letters");
+
+        accessthedata();
+
         setContentView(R.layout.activity_ar_letter_render);
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
 
         // ViewRenderable.builder().setView(getApplicationContext(), R.raw.profile).build();
 
+        Log.d("XYZ","Second");
         ViewRenderable.builder()
-                .setView(this, R.layout.activity_add__letter  )
+                .setView(this, lay  )
                 .build()
                 .thenAccept(renderable -> viewrenderable = renderable)
                 .exceptionally(
@@ -74,6 +109,42 @@ public class ArLetterRender extends AppCompatActivity {
                     andy.setRenderable(viewrenderable);
                     andy.select();
                 });
+    }
+
+    private void accessthedata() {
+
+        UserData.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> mailers = dataSnapshot.getChildren();
+                for(DataSnapshot d: mailers){
+                    int flag = 0;
+                    Iterable<DataSnapshot> letters = d.getChildren();
+                    for(DataSnapshot let : letters){
+                        String keyi = let.getKey().toString();
+                        if(keyi.equals(key)){
+                            Log.d("XYZ","First");
+                            title.setText(let.child("Title").getValue().toString());
+                            description.setText(let.child("Description").getValue().toString());
+                            Glide.with(getApplicationContext()).load(let.child("Url").getValue().toString())
+                                    .thumbnail(0.5f)
+                                    .crossFade()
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(Pic);
+                            flag = 1;
+                            break;
+                        }
+                    }
+                    if(flag == 1){
+                        break;
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
