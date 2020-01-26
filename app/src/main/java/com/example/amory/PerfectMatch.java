@@ -1,6 +1,9 @@
 package com.example.amory;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -47,6 +50,15 @@ public class PerfectMatch extends AppCompatActivity {
                 listItems);
 
         nearme.setAdapter(adapter);
+
+        nearme.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(getApplicationContext(),ViewOtherProfile.class);
+                i.putExtra("key",key_title.get(position));
+                startActivity(i);
+            }
+        });
 
         retriveData();
 
