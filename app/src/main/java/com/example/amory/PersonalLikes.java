@@ -38,6 +38,7 @@ public class PersonalLikes extends AppCompatActivity {
 
         nearme = findViewById(R.id.personallikes);
         mAuth = FirebaseAuth.getInstance();
+        key_title = new ArrayList<String>();
         user = mAuth.getCurrentUser();
         listItems = new ArrayList<String>();
         adapter=new ArrayAdapter<String>(this,
@@ -57,8 +58,9 @@ public class PersonalLikes extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Iterable<DataSnapshot> dt = dataSnapshot.getChildren();
                 for(DataSnapshot d : dt){
-                    adapter.add(d.child("Key").getValue().toString());
+                    key_title.add(d.child("Key").getValue().toString());
                 }
+                getname();
             }
 
             @Override
@@ -68,5 +70,29 @@ public class PersonalLikes extends AppCompatActivity {
         });
 
     }
-    
+
+    private void getname() {
+
+        for(String key: key_title){
+
+            DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
+
+            database.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Iterable<DataSnapshot> snapshot = dataSnapshot.getChildren();
+                    for (DataSnapshot r : snapshot) {
+                        String val = r.child("Name").getValue().toString();
+                        adapter.add(val);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+    }
 }

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class PerfectMatch extends AppCompatActivity {
     ListView nearme;
     ArrayList<String> listItems;
-
+    ArrayList<String> key_title;
     ArrayList<String> first;
     ArrayList<String> second;
     ArrayAdapter<String> adapter;
@@ -39,6 +39,7 @@ public class PerfectMatch extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         first = new ArrayList<String>();
+        key_title = new ArrayList<String>();
         second = new ArrayList<String>();
         listItems = new ArrayList<String>();
         adapter=new ArrayAdapter<String>(this,
@@ -97,9 +98,35 @@ public class PerfectMatch extends AppCompatActivity {
         for(String s1: first){
             for(String s2: second){
                 if(s1.equals(s2)){
-                    adapter.add(s1);
+                    key_title.add(s1);
                 }
             }
         }
+        getname();
+    }
+
+    private void getname() {
+
+        for(String key: key_title){
+
+            DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
+
+            database.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Iterable<DataSnapshot> snapshot = dataSnapshot.getChildren();
+                    for (DataSnapshot r : snapshot) {
+                        String val = r.child("Name").getValue().toString();
+                        adapter.add(val);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
     }
 }
