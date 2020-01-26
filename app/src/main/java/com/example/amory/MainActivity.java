@@ -36,6 +36,13 @@ public class MainActivity extends AppCompatActivity {
         Button match = findViewById(R.id.match);
 
 
+        match.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),PerfectMatch.class);
+                startActivity(i);
+            }
+        });
 
         likepersonal.setOnClickListener(new View.OnClickListener() {
             @Override
