@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.ar.sceneform.plugin'
 
 android {
     compileSdkVersion 29
@@ -44,3 +45,14 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }
+
+
+sceneform.asset('SampleData/human_male.obj',
+        'default',
+        'SampleData/human_male.sfa',
+        'src/main/assets/human_male')
+
+sceneform.asset('SampleData/female.obj',
+        'default',
+        'SampleData/female.sfa',
+        'src/main/assets/female')
