@@ -73,7 +73,6 @@ public class Add_Letter extends AppCompatActivity  {
         }
         FirebaseUser user = mAuth.getCurrentUser();
         PersonalData = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
-        UserData = FirebaseDatabase.getInstance().getReference().child("Letters").child(user.getUid());
         url = getprofilepic();
         description = findViewById(R.id.description);
         title = findViewById(R.id.title);
@@ -142,7 +141,13 @@ public class Add_Letter extends AppCompatActivity  {
             return;
 
         }
-        UserData = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+        user = mAuth.getCurrentUser();
+        if(user == null){
+            Intent i = new Intent(getApplicationContext(),Login.class);
+            startActivity(i);
+        }
+        Log.d("XYZ",user.getUid());
+        UserData = FirebaseDatabase.getInstance().getReference().child("Letters").child(user.getUid());
 
 
         final Map structure = new HashMap();
@@ -153,7 +158,7 @@ public class Add_Letter extends AppCompatActivity  {
         structure.put("Signature",mAuth.getCurrentUser().getUid());
         structure.put("Latitude",lat);
         structure.put("Longitude",lng);
-        structure.put("Url",url);
+        structure.put("Url",url.toString());
 
 
         final DatabaseReference data = UserData.push();
@@ -168,7 +173,7 @@ public class Add_Letter extends AppCompatActivity  {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             pgbar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "Profile has been saved", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Letter has been saved", Toast.LENGTH_SHORT).show();
                             Intent i = new Intent(getApplicationContext(),MainActivity.class);
                             startActivity(i);
                         } else {

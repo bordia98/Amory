@@ -154,12 +154,15 @@ public class ShowNearBy extends AppCompatActivity {
                 Iterable<DataSnapshot> mailers = dataSnapshot.getChildren();
                 for(DataSnapshot d: mailers){
                    Iterable<DataSnapshot> letters = d.getChildren();
+                   if(d.getKey().equals(user.getUid())){
+                       continue;
+                   }
                    for(DataSnapshot let : letters){
                        String key = let.getKey().toString();
                        double flat = Double.parseDouble(let.child("Latitude").getValue().toString());
                        double flng = Double.parseDouble(let.child("Longitude").getValue().toString());
                        double ddis = getDistanceFromLatLonInm(flat,flng,lat,lng);
-                       if(ddis < 10){
+                       if(ddis < 10 ){
                            key_title.add(key);
 //                           listItems.add(let.child("Title").getValue().toString());
                            Log.d("XYZ",let.child("Title").getValue().toString());
