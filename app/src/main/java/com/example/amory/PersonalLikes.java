@@ -1,31 +1,32 @@
 package com.example.amory;
+
+import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class PersonalLikes extends AppCompatActivity {
 
-    String key;
-    String  otherkey;
-    FirebaseAuth mAuth;
-    DatabaseReference database;
-    DatabaseReference database2;
+    ListView nearme;
+    ArrayList<String> listItems;
 
+    ArrayList<String> key_title;
+
+    ArrayAdapter<String> adapter;
+    FirebaseAuth mAuth;
     FirebaseUser user;
 
     @Override
@@ -35,62 +36,36 @@ public class PersonalLikes extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        key = getIntent().getStringExtra("key");
-        otherkey = getIntent().getStringExtra("otherkey");
+        nearme = findViewById(R.id.personallikes);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        if(user == null){
-            Intent i = new Intent(getApplicationContext(),Login.class);
-            startActivity(i);
-        }
-        database = FirebaseDatabase.getInstance().getReference().child("FRIENDLIST").child(user.getUid()).child("Personal");
-        final DatabaseReference data = database.push();
+        listItems = new ArrayList<String>();
+        adapter=new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1 ,
+                listItems);
 
-        final Map structure = new HashMap();
-        structure.put("Key", otherkey);
+        nearme.setAdapter(adapter);
 
+        retriveData();
 
-        Thread mainthread = new Thread(new Runnable() {
+    }
+
+    private void retriveData() {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("FRIENDLIST").child(user.getUid()).child("Personal");
+        database.addValueEventListener(new ValueEventListener() {
             @Override
-            public void run() {
-                data.setValue(structure).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> dt = dataSnapshot.getChildren();
+                for(DataSnapshot d : dt){
+                    adapter.add(d.child("Key").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
-        mainthread.run();
-        database2 = FirebaseDatabase.getInstance().getReference().child("FRIENDLIST").child(otherkey).child("Others");
-        final DatabaseReference data2 = database.push();
-
-        final Map structure2 = new HashMap();
-        structure2.put("Key", key);
-
-
-        Thread mainthread2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                data2.setValue(structure2).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-        });
-
-
-        mainthread2.run();
     }
 }

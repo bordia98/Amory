@@ -162,7 +162,7 @@ public class ShowNearBy extends AppCompatActivity {
                        double flat = Double.parseDouble(let.child("Latitude").getValue().toString());
                        double flng = Double.parseDouble(let.child("Longitude").getValue().toString());
                        double ddis = getDistanceFromLatLonInm(flat,flng,lat,lng);
-                       if(ddis < 10 ){
+                       if(ddis < 100 ){
                            key_title.add(key);
 //                           listItems.add(let.child("Title").getValue().toString());
                            Log.d("XYZ",let.child("Title").getValue().toString());

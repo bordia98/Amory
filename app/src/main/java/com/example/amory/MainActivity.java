@@ -31,6 +31,27 @@ public class MainActivity extends AppCompatActivity {
         Button addletter = findViewById(R.id.AddLetter);
         Button search = findViewById(R.id.search);
         Button viewpro = findViewById(R.id.view_profile);
+        Button likepersonal = findViewById(R.id.likepersonal);
+        Button likeother = findViewById(R.id.likeother);
+        Button match = findViewById(R.id.match);
+
+
+
+        likepersonal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),PersonalLikes.class);
+                startActivity(i);
+            }
+        });
+
+        likeother.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),OtherLikes.class);
+                startActivity(i);
+            }
+        });
         Button logout = findViewById(R.id.logout);
 
         addbio.setOnClickListener(new View.OnClickListener() {

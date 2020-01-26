@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
@@ -36,6 +38,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ArLetterRender extends AppCompatActivity {
@@ -43,10 +48,14 @@ public class ArLetterRender extends AppCompatActivity {
     private static final String TAG = ArLetterRender.class.getSimpleName();
     private static final double MIN_OPENGL_VERSION = 3.0;
 
+    DatabaseReference database;
+    DatabaseReference database2;
+
     private ArFragment arFragment;
-    private ModelRenderable andyRenderable;
+    private ModelRenderable malerenderable;
     private ViewRenderable viewrenderable;
     String key;
+    String otherkey;
     private DatabaseReference UserData;
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -55,6 +64,7 @@ public class ArLetterRender extends AppCompatActivity {
     CircleImageView Pic;
     boolean check=true;
 
+    int count=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +73,7 @@ public class ArLetterRender extends AppCompatActivity {
             return;
         }
 
+        mAuth = FirebaseAuth.getInstance();
         Log.d("XYZ",key);
         View lay = getLayoutInflater().inflate(R.layout.letterlayout,null);
         title = lay.findViewById(R.id.title);
@@ -92,32 +103,120 @@ public class ArLetterRender extends AppCompatActivity {
                             return null;
                         });
 
+        ModelRenderable.builder()
+                .setSource(this, R.raw.model)
+                .build()
+                .thenAccept(renderable -> malerenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast =
+                                    Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        final TransformableNode andy = new TransformableNode(arFragment.getTransformationSystem());
+        final TransformableNode other = new TransformableNode(arFragment.getTransformationSystem());
 
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-                    if(check){
+                    count += 1;
+                    if(count== 1){
                         if (viewrenderable == null) {
                             Log.d("XYZ", "Why i am here");
                             return;
                         }
 
-                        // Create the Anchor.
                         Anchor anchor = hitResult.createAnchor();
                         AnchorNode anchorNode = new AnchorNode(anchor);
                         anchorNode.setParent(arFragment.getArSceneView().getScene());
                         // Create the transformable andy and add it to the anchor.
-                        TransformableNode andy = new TransformableNode(arFragment.getTransformationSystem());
                         andy.setParent(anchorNode);
+
                         ((ViewRenderable) viewrenderable).setSizer(new FixedWidthViewSizer(1));
                         andy.setRenderable(viewrenderable);
                         andy.select();
-                        check = false;
+                    }else if(count == 2){
+                        user = mAuth.getCurrentUser();
+                        andy.getParent().removeChild(andy);
+                        saveData();
+//                        Anchor anchor = hitResult.createAnchor();
+//                        AnchorNode anchorNode = new AnchorNode(anchor);
+//                        anchorNode.setParent(arFragment.getArSceneView().getScene());
+//                        other.getScaleController();
+//                        other.setParent(anchorNode);
+//                        other.setRenderable(malerenderable);
+//                        other.select();
                     }else{
+                        other.getParent().removeChild(other);
                         Toast.makeText(getApplicationContext(),"You Liked the Letter",Toast.LENGTH_SHORT).show();
+                        check = false;
+                    }
+                    Log.d("XYZ",count+"");
+                });
+    }
 
-                        // Code for Matching will come here
+    private void saveData() {
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        if(user == null){
+            Intent i = new Intent(getApplicationContext(),Login.class);
+            startActivity(i);
+        }
+        database = FirebaseDatabase.getInstance().getReference().child("FRIENDLIST").child(user.getUid()).child("Personal");
+        final DatabaseReference data = database.push();
+
+        final Map structure = new HashMap();
+        structure.put("Key", otherkey);
+
+
+        Thread mainthread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                data.setValue(structure).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
+            }
+        });
+
+        mainthread.run();
+
+        database2 = FirebaseDatabase.getInstance().getReference().child("FRIENDLIST").child(otherkey).child("Others");
+        final DatabaseReference data2 = database2.push();
+
+        final Map structure2 = new HashMap();
+        structure2.put("Key", user.getUid());
+
+
+        Thread mainthread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                data2.setValue(structure2).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                            startActivity(i);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        mainthread2.run();
+
     }
 
     private void accessthedata() {
@@ -134,6 +233,7 @@ public class ArLetterRender extends AppCompatActivity {
                             Log.d("XYZ","First");
                             title.setText(let.child("Title").getValue().toString());
                             description.setText(let.child("Description").getValue().toString());
+                            otherkey = let.child("Signature").getValue().toString();
                             Glide.with(getApplicationContext()).load(let.child("Url").getValue().toString())
                                     .thumbnail(0.5f)
                                     .crossFade()

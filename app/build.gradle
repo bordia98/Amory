@@ -52,7 +52,8 @@ sceneform.asset('SampleData/human_male.obj',
         'SampleData/human_male.sfa',
         'src/main/assets/human_male')
 
-sceneform.asset('SampleData/female.obj',
+
+sceneform.asset('SampleData/model.obj',
         'default',
-        'SampleData/female.sfa',
-        'src/main/assets/female')
+        'SampleData/model.sfa',
+        'src/main/assets/model')
