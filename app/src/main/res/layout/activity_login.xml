@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="130dp"
             android:layout_marginLeft="130dp"
-            android:background="#2d89ec"
+            android:background="@drawable/round"
             android:layout_margin="20dp"
             android:textColor="#FFFFFF"
             android:padding="5dp"

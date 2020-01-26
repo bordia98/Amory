@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="100dp"
                 android:layout_marginLeft="100dp"
-                android:background="#2d89ec"
+                android:background="@drawable/round"
                 android:layout_marginTop="30dp"
                 android:textColor="#FFFFFF"
                 android:padding="15dp"

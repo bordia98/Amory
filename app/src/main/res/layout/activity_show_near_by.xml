@@ -29,6 +29,10 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:dividerHeight="2dp"
+        android:divider="@color/colorPrimary"
+        android:padding="15dp"
+        android:layout_margin="5dp"
         android:id="@+id/nearbyletter">
 
     </ListView>
